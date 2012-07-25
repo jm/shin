@@ -299,5 +299,7 @@ function __shin_check_package_init() {
 function __shin_edit_bucket() {
 	mkdir -p `__shin_home`/packages/bucket 2>/dev/null
 	touch `__shin_home`/packages/bucket/shinit.sh
+	
 	${FCEDIT:-${VISUAL:-${EDITOR:-vi}}} `__shin_home`/packages/bucket/shinit.sh
+	source `__shin_home`/packages/bucket/shinit.sh
 }
