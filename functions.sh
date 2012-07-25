@@ -15,6 +15,10 @@ function shin() {
 		list)
 		__shin_list "$2"
 		;;
+
+		init)
+		__shin_init
+		;;
 	esac	
 }
 
@@ -38,6 +42,11 @@ function __shin_home() {
 	echo "$HOME/.shin"
 }
 
+function __shin_init()
+{
+	source `__shin_home`/sets/all.sh
+}
+
 function __shin_install() {
 	local install_target=$1
 	local return_to=`pwd`
@@ -49,7 +58,7 @@ function __shin_install() {
 	then
  		echo "Installing from Gist repo $install_target..."
  		local repo_name=`echo ${install_target##*/}`
- 		__shin_install_from_repo "$install_target" "gist-$repo_name"
+ 		__shin_install_from_repo "$install_target" "gist-${repo_name/%.*}"
  	elif [[ "$install_target" =~ ^[0-9]*$ ]]
  	then
  		local gist_repo="git://gist.github.com/$install_target.git"
@@ -63,9 +72,10 @@ function __shin_install() {
 	elif [[ "$install_target" =~ ^git://.* ]]
 	then
 		echo "Installing from repo $install_target..."
+		echo ""
 
  		local repo_name=`echo ${install_target##*/}`
-		__shin_install_from_repo "$install_target" "$repo_name"
+		__shin_install_from_repo "$install_target" "${repo_name/%.*}"
  	elif [[ "$install_target" =~ .*/[a-zA-Z0-9\.\-_]* ]]
  	then
  		local repo=$1
@@ -87,13 +97,14 @@ function __shin_install() {
 
 function __shin_bucket_install() {
 	local install_target=$1
-	local bucket_path="`__shin_home`/packages/bucket.sh"
-	touch $bucket_path
+	local bucket_path="`__shin_home`/packages/bucket"
+	mkdir -p $bucket_path
+	touch $bucket_path/shinit.sh
 	local script_text=`curl $install_target`
 
 	if [ $? -eq 0 ]
 	then
-		echo "$script_text" >> $bucket_path
+		echo "$script_text" >> $bucket_path/shinit.sh
 		__shin_capture_function_list "bucket"
 		__shin_regenerate_manifests
 
@@ -140,6 +151,30 @@ function __shin_uninstall() {
 function __shin_update() {
 	local package_name=$1
 	
+	if [ "$package_name" = "self" ]
+	then
+		__shin_update_self
+	else
+		__shin_update_package "$package_name"
+	fi
+}
+
+function __shin_update_self() {
+	local return_to=`pwd`
+	echo "Updating shin system..."
+	echo ""
+
+	cd `__shin_home`/system
+	git pull origin master
+
+	echo ""
+	echo "Updated!"
+	cd $return_to
+}
+
+function __shin_update_package() {
+	local package_name=$1
+
 	if [ -e `__shin_home`/packages/$package_name ]
 	then
 		local return_to=`pwd`
@@ -169,6 +204,11 @@ function __shin_list() {
 	cat `__shin_home`/manifest | while read line ; do
 		local name=`echo "$line" | sed "s/\:.*$//"`
  		local rest=`echo ${line#*:}`
+
+ 		if [ $name = "bucket" ]
+ 		then
+ 			continue
+ 		fi
 
 		echo "[$name]"
 		echo "$rest"
