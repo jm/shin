@@ -265,6 +265,7 @@ function __shin_regenerate_manifests() {
 			echo "$package_name:(No description given.)" >> `__shin_home`/manifest
 		fi
 
+		echo "package_path=\"`__shin_home`/packages/$package_name\"" >> `__shin_home`/sets/all.sh
 		echo "source `__shin_home`/packages/$package_name/shinit.sh" >> `__shin_home`/sets/all.sh
 	done
 }
