@@ -84,8 +84,19 @@ That's all!  The `shinit.sh` file is where the magic happens.  If you need to so
 
 	source $package_path/this_file.sh
 
-Otherwise, you can put everything in the `shinit.sh` file.  You should include a `.shin_description` file since one day I may build out an index for these things.
+Otherwise, you can put everything in the `shinit.sh` file.  You should include a `.shin_description` file since one day I may build out an index for these things.  For an example of the smallest (useful) package, check out my `serve` package at https://github.com/jm/serve.
+
+## Removing from your system
+
+To remove `shin`, simply delete `~/.shin` and remove the lines added by `shin` to your `.profile`.
 
 ## Contributing and such
 
-Feel free to file issues in the issue tracker here on GitHub; pull requests are, of course, accepted.
+Feel free to file issues in the issue tracker here on GitHub; pull requests are, of course, accepted (especially if I've done something stupid in Bash; a shell programmer, I am not).
+
+As for things to add, here's a quick list:
+
+* Move description and dependency information into a `.shinfo` file instead of separate files
+* Build out a ridiculously simple index service that simply has an API for pointing to repos
+* Dependencies would be nice
+* RVM Gemset-like functionality.  Much of the infrastructure is there (segmenting into sets, mapping functions added by a package, etc.); there's just a bit more groundwork to lay
