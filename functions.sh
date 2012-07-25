@@ -115,6 +115,7 @@ function __shin_bucket_install() {
 		echo "" >> $bucket_path/shinit.sh
 		__shin_capture_function_list "bucket"
 		__shin_regenerate_manifests
+		source `__shin_home`/packages/bucket/shinit.sh
 
 		echo "Script installed to your bucket."
 	else
