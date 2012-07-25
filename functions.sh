@@ -72,7 +72,7 @@ function __shin_install() {
 
  		echo "Installing from Gist repo $gist_repo..."
  		__shin_install_from_repo "$install_target" "gist-$install_target"
-	elif [[ "$install_target" =~ ^http://.* ]]
+	elif [[ "$install_target" =~ ^http[s]?://.* ]]
 	then
 		echo "Installing $install_target to your bucket..."
 		__shin_bucket_install $install_target
