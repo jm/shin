@@ -5,7 +5,7 @@ Manage those dotfiles and shell snippets like a human, you dirty ape.
 
 ## OK, so what?
 
-`shin` is a simple package manager geared towards wrangling all those dotfiles you've got stuck in `.profile` right now.  Instead of a giant file of death, you can now separate them into neat, versionable little packages.
+`shin` is a simple package manager geared towards wrangling all those dotfile fragments, shell functions, and other crap you've got stuck in `.profile`, `.bash_profile`, and their friends right now.  Instead of a giant file of death, you can now separate them into neat, versionable little packages.
 
 ## Installation
 
