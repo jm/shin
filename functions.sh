@@ -185,6 +185,7 @@ function __shin_update_self() {
 
 	cd `__shin_home`/system
 	git pull origin master
+	source functions.sh
 
 	echo ""
 	echo "Updated!"
