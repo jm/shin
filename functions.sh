@@ -111,6 +111,9 @@ function __shin_http_install() {
 		install_name="${trimmed_install_name/%.*}"
 	fi
 
+	echo "Installing script as $install_name..."
+	echo ""
+
 	local bucket_path="`__shin_home`/packages/$install_name"
 	mkdir -p $bucket_path
 	local script_text=`curl $install_target`
@@ -124,7 +127,7 @@ function __shin_http_install() {
 		__shin_capture_function_list $install_name
 		__shin_regenerate_manifests
 
-		echo "Script installed to your bucket."
+		echo "$install_name installed."
 	else
 		echo "There was a problem fetching $install_target."
 	fi
