@@ -9,7 +9,22 @@ Manage those dotfiles like a human, you dirty ape.
 
 ## Installation
 
+To install `shin`, simply run the `install.sh` file from the repo.  You can do so like this:
 
+	wget https://raw.github.com/jm/shin/master/install.sh
+	sh install.sh
+
+Or if you're feeling risky:
+
+	curl https://raw.github.com/jm/shin/master/install.sh | sh
+
+The install will do three things:
+
+* Create a directory in your home directory named `.shin`
+* Clone a copy of `shin` to `.shin/system`
+* Install a small little initializer snippet into the bottom of your `.profile`
+
+Once that's finished up, you should be good to go.
 
 ## Usage
 
