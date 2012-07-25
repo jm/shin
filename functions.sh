@@ -161,6 +161,8 @@ function __shin_uninstall() {
 	if [ -e `__shin_home`/packages/$package_name ]
 	then
 		rm -rf `__shin_home`/packages/$package_name
+		__shin_regenerate_manifests
+		
 		echo "Package $package_name uninstalled." 
 	else
 		echo "Package $package_name not found."
