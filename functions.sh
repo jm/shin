@@ -16,6 +16,10 @@ function shin() {
 		__shin_list "$2"
 		;;
 
+		bucket)
+		__shin_edit_bucket
+		;;
+
 		init)
 		__shin_init
 		;;
@@ -290,4 +294,9 @@ function __shin_check_package_init() {
 	else
 		__shin_package_init_result=1;
 	fi
+}
+
+function __shin_edit_bucket() {
+	touch `__shin_home`/packages/bucket/shinit.sh
+	${FCEDIT:-${VISUAL:-${EDITOR:-vi}}} `__shin_home`/packages/bucket/shinit.sh
 }
