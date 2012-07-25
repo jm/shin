@@ -74,8 +74,7 @@ function __shin_install() {
  		__shin_install_from_repo "$install_target" "gist-$install_target"
 	elif [[ "$install_target" =~ ^http[s]?://.* ]]
 	then
-		echo "Installing $install_target to your bucket..."
-		__shin_bucket_install $install_target
+		__shin_http_install $install_target $2
 	elif [[ "$install_target" =~ ^git://.* ]]
 	then
 		echo "Installing from repo $install_target..."
@@ -102,20 +101,28 @@ function __shin_install() {
 	cd $return_to
 }
 
-function __shin_bucket_install() {
+function __shin_http_install() {
 	local install_target=$1
-	local bucket_path="`__shin_home`/packages/bucket"
+	local install_name=$2
+
+	if [ "$install_name" = "" ]
+	then
+		local trimmed_install_name=`echo ${install_target##*/}`
+		install_name = "${trimmed_install_name/%.*}"
+	fi
+
+	local bucket_path="`__shin_home`/packages/$install_name"
 	mkdir -p $bucket_path
-	touch $bucket_path/shinit.sh
 	local script_text=`curl $install_target`
 
 	if [ $? -eq 0 ]
 	then
-		echo "$script_text" >> $bucket_path/shinit.sh
-		echo "" >> $bucket_path/shinit.sh
-		__shin_capture_function_list "bucket"
+		echo "$script_text" > $bucket_path/shinit.sh
+		echo "Downloaded from $install_target" > $bucket_path/.shin_description
+		echo "$install_target" > $bucket_path/.shin_origin 
+
+		__shin_capture_function_list $install_name
 		__shin_regenerate_manifests
-		source `__shin_home`/packages/bucket/shinit.sh
 
 		echo "Script installed to your bucket."
 	else
