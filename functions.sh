@@ -112,6 +112,7 @@ function __shin_bucket_install() {
 	if [ $? -eq 0 ]
 	then
 		echo "$script_text" >> $bucket_path/shinit.sh
+		echo "" >> $bucket_path/shinit.sh
 		__shin_capture_function_list "bucket"
 		__shin_regenerate_manifests
 
@@ -299,7 +300,7 @@ function __shin_check_package_init() {
 function __shin_edit_bucket() {
 	mkdir -p `__shin_home`/packages/bucket 2>/dev/null
 	touch `__shin_home`/packages/bucket/shinit.sh
-	
+
 	${FCEDIT:-${VISUAL:-${EDITOR:-vi}}} `__shin_home`/packages/bucket/shinit.sh
 	source `__shin_home`/packages/bucket/shinit.sh
 }
