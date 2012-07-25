@@ -108,7 +108,7 @@ function __shin_http_install() {
 	if [ "$install_name" = "" ]
 	then
 		local trimmed_install_name=`echo ${install_target##*/}`
-		install_name = "${trimmed_install_name/%.*}"
+		install_name="${trimmed_install_name/%.*}"
 	fi
 
 	local bucket_path="`__shin_home`/packages/$install_name"
