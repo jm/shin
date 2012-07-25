@@ -74,7 +74,7 @@ function __shin_install() {
  		__shin_install_from_repo "$install_target" "gist-$install_target"
 	elif [[ "$install_target" =~ ^http[s]?://.* ]]
 	then
-		__shin_http_install $install_target $2
+		__shin_http_install "$install_target" "$2"
 	elif [[ "$install_target" =~ ^git://.* ]]
 	then
 		echo "Installing from repo $install_target..."
