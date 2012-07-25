@@ -1,7 +1,7 @@
 shin
 ====
 
-Manage those dotfiles like a human, you dirty ape.
+Manage those dotfiles and shell snippets like a human, you dirty ape.
 
 ## OK, so what?
 
