@@ -44,7 +44,10 @@ function __shin_home() {
 
 function __shin_init()
 {
-	source `__shin_home`/sets/all.sh
+	if [ -e "`__shin_home`/sets/all.sh" ]
+	then
+		source `__shin_home`/sets/all.sh
+	fi
 }
 
 function __shin_install() {
@@ -199,21 +202,26 @@ function __shin_update_package() {
 }
 
 function __shin_list() {
-	echo "Listing all packages"
-	echo ""
-	cat `__shin_home`/manifest | while read line ; do
-		local name=`echo "$line" | sed "s/\:.*$//"`
- 		local rest=`echo ${line#*:}`
-
- 		if [ $name = "bucket" ]
- 		then
- 			continue
- 		fi
-
-		echo "[$name]"
-		echo "$rest"
+	if [ -e "`__shin_home`/manifest" ]
+	then
+		echo "Listing all packages"
 		echo ""
-	done
+		cat `__shin_home`/manifest | while read line ; do
+			local name=`echo "$line" | sed "s/\:.*$//"`
+	 		local rest=`echo ${line#*:}`
+
+	 		if [ $name = "bucket" ]
+	 		then
+	 			continue
+	 		fi
+
+			echo "[$name]"
+			echo "$rest"
+			echo ""
+		done
+	else
+		echo "No packages installed."
+	fi
 }
 
 # We use this to unset functions added by a specific package.  Useful for managing sets of
