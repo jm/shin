@@ -145,6 +145,7 @@ function __shin_install_from_repo() {
 		if [ $__shin_package_init_result -eq 1 ]
 		then
 			if [ -e `__shin_home`/packages/$repo_name/shinstall.sh ]
+			then
 				source `__shin_home`/packages/$repo_name/shinstall.sh
 			fi
 
