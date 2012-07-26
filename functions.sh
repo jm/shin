@@ -212,6 +212,7 @@ function __shin_update_package() {
 		then
 			__shin_update_repo "$package_name"
 		elif [ -e `__shin_home`/packages/$package_name/.shin_origin ]
+		then
 			__shin_update_http "$package_name"
 		else
 			echo "No data present to update with.  Aborting!"
