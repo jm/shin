@@ -144,6 +144,10 @@ function __shin_install_from_repo() {
 
 		if [ $__shin_package_init_result -eq 1 ]
 		then
+			if [ -e `__shin_home`/packages/$repo_name/shinstall.sh ]
+				source `__shin_home`/packages/$repo_name/shinstall.sh
+			fi
+
 			__shin_capture_function_list $repo_name
 			__shin_regenerate_manifests
 
@@ -162,7 +166,7 @@ function __shin_uninstall() {
 	then
 		rm -rf `__shin_home`/packages/$package_name
 		__shin_regenerate_manifests
-		
+
 		echo "Package $package_name uninstalled." 
 	else
 		echo "Package $package_name not found."
@@ -202,21 +206,53 @@ function __shin_update_package() {
 		local return_to=`pwd`
 
 		cd `__shin_home`/packages/$package_name
-		git pull
-
-		if [ $? -eq 0 ]
+		
+		if [ -e `__shin_home`/packages/$package_name/.git ]
 		then
-			__shin_capture_function_list $package_name
-			__shin_regenerate_manifests
-
-			echo "Package $package_name updated." 
+			__shin_update_repo "$package_name"
+		elif [ -e `__shin_home`/packages/$package_name/.shin_origin ]
+			__shin_update_http "$package_name"
 		else
-			echo "There was a problem updating $repo.  Make sure the repo still exists on GitHub and you have permission to access it."
+			echo "No data present to update with.  Aborting!"
 		fi
 
 		cd $return_to
 	else
 		echo "Package $package_name not found."
+	fi
+}
+
+function __shin_update_http() {
+	local package_name=$1
+
+	local package_path="`__shin_home`/packages/$package_name"
+	local package_origin="`cat $package_path/.shin_origin`"
+	local script_text=`curl $package_origin`
+
+	if [ $? -eq 0 ]
+	then
+		echo "$script_text" > $package_path/shinit.sh
+
+		__shin_capture_function_list $package_name
+
+		echo "$package_name installed."
+	else
+		echo "There was a problem updating from $package_origin."
+	fi
+}
+
+function __shin_update_repo() {
+	local package_name=$1
+	git pull
+
+	if [ $? -eq 0 ]
+	then
+		__shin_capture_function_list $package_name
+		__shin_regenerate_manifests
+
+		echo "Package $package_name updated." 
+	else
+		echo "There was a problem updating $repo.  Make sure the repo still exists on GitHub and you have permission to access it."
 	fi
 }
 
