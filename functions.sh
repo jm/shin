@@ -20,6 +20,10 @@ function shin() {
 		__shin_edit_bucket
 		;;
 
+		ps1)
+		__shin_set_ps1 "$2"
+		;;
+
 		init)
 		__shin_init
 		;;
@@ -43,6 +47,10 @@ function .list() {
 }
 
 function .ps1() {
+	__shin_set_ps1 "$1"
+}
+
+function .prompt() {
 	__shin_set_ps1 "$1"
 }
 
@@ -369,7 +377,7 @@ function __shin_set_ps1() {
 	if [ "$package_name" = "reset" ]
 	then
 		source `__shin_home`/ps1_reset.sh
-		echo "PS1 reset."
+		echo "Prompt reset."
 	elif [ -e `__shin_home`/packages/$package_name/ps1.sh ]
 	then
 		source `__shin_home`/packages/$package_name/ps1.sh
