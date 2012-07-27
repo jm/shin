@@ -28,9 +28,9 @@ Once that's finished up, you should be good to go.
 
 ## Usage
 
-There are five basic commands.
+The commands are fairly straightforward:
 
-### Installing
+### Installing packages from Git
 
 To install a package into `shin`, it must be built to work with `shin` (see information on package format below; it's simple!).  Once you've got a Git repository you'd like to install from, you can install from it in a couple of ways using the `.install` command (aliased as `shin install`).  If it's a GitHub repository, you can simply give `shin` the `owner/repo` format like so:
 
@@ -44,21 +44,41 @@ If the package you want to install is hosted on Gist (you can have multiple file
 
 	mymachine$ .install 12345
 
+#### Updating via Git
+
+Updating a package will go to its origin and pull the `master` branch (I may support other branches later or something, but it's an unlikely addition unless someone makes a compelling patch).  To update a package, run the `.update` command (aliased as `shin update`) followed by the package name:
+
+	mymachine$ .update silly
+
+### Installing packages via HTTP
+
+You can also create ad hoc packages by installing scripts from a URL.  Simply feed the `.install` command or its alias an HTTP URL rather than a Git URL:
+
+	mymachine$ .install http://myscripts.com/myscript.sh
+
+That will create a `myscript` package from the contents of that URL.  If given a second argument (e.g., `.install http://myscripts.com/myscript.sh lololol`), `shin` will name the package as the second argument.
+
+#### Updating via HTTP
+
+To update an HTTP package, simply run `.update package-name`.  `shin` stores the URL for the script in the package, so it knows where to go and fetch a new version from.
+
 ### Uninstalling
 
 To uninstall a package, simply run the `.uninstall` (aliased as `shin uninstall` also) command followed by the package name:
 
 	mymachine$ .uninstall silly
 
-### Updating
-
-Updating a package will go to its origin and pull the `master` branch (I may support other branches later or something, but it's an unlikely addition unless someone makes a compelling patch).  To update a package, run the `.update` command (aliased as `shin update`) followed by the package name:
-
-	mymachine$ .update silly
-
-### Listing
+### Listing packages
 
 To get a list of all packages, run `.list` (or `shin list`).  One day I'll support in-list searching, but that's pretty far down the list.
+
+### Setting your prompt
+
+Some packages provide a special prompt you can activate.  Let's say you had a nice Git package that had a special prompt for managing bisects.  You might activate it like so:
+
+	.ps1 awesome-git-package-name
+
+You can also activate the special prompts with the `.prompt` or `shin ps1` commands.
 
 ### Initializing
 
@@ -66,19 +86,16 @@ If you choose to remove the shell initializer from your `.profile`, you can init
 
 ### The bucket
 
-`shin` also has the concept of a "bucket" package.  This package is basically just a holder for any random dotfiles you want to place in there.  For example, let's say you want to add `http://example.com/awesome_script.sh` for use but don't want to build a package with it.  Simply run `.install` followed by the URL:
-
-	mymachine$ .install http://example.com/awesome_script.sh
-
-This will append the contents of the URL to your bucket file.  To edit your bucket file directly in your default editor, simply run `shin bucket`.
+`shin` also has the concept of a "bucket" package.  This package is basically just a holder for any random snippets or code you want to place in there.  To edit your bucket file directly in your default editor, simply run `shin bucket`.
 
 ## Anatomy of a package
 
-A package is simply a Git repository with a few special files:
+A (non-ad-hoc) `shin` package is simply a Git repository with a few special files:
 
 	* A `shinit.sh` file (required)
 	* Your code (either in the `shinit.sh` or sourced from there)
 	* A `.shin_description` file that is a short description of the package
+	* An optional `ps1.sh` that will chnage a user's prompt (PS1)
 
 That's all!  The `shinit.sh` file is where the magic happens.  If you need to source anything from there, simply use the `$package_path` variable the loader will expose to your script to source things in the package's path:
 
