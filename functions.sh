@@ -52,7 +52,7 @@ function __shin_home() {
 
 function __shin_init()
 {
-	echo $PS1 > `__shin_home`/ps1_reset.sh
+	echo "PS1=\"$PS1\"" > `__shin_home`/ps1_reset.sh
 
 	if [ -e "`__shin_home`/sets/all.sh" ]
 	then
@@ -368,7 +368,7 @@ function __shin_set_ps1() {
 
 	if [ "$package_name" = "reset" ]
 	then
-		PS1=$(cat `shin_home`/ps1_reset.sh)
+		source `shin_home`/ps1_reset.sh
 		echo "PS1 reset."
 	elif [ -e `__shin_home`/packages/$package_name/ps1.sh ]
 	then
