@@ -54,6 +54,10 @@ function .prompt() {
 	__shin_set_ps1 "$1"
 }
 
+function .bucket() {
+	__shin_edit_bucket
+}
+
 function __shin_home() {
 	echo "$HOME/.shin"
 }
