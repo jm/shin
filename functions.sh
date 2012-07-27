@@ -368,7 +368,7 @@ function __shin_set_ps1() {
 
 	if [ "$package_name" = "reset" ]
 	then
-		source `shin_home`/ps1_reset.sh
+		source `__shin_home`/ps1_reset.sh
 		echo "PS1 reset."
 	elif [ -e `__shin_home`/packages/$package_name/ps1.sh ]
 	then
