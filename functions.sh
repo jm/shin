@@ -42,12 +42,18 @@ function .list() {
 	__shin_list "$1"
 }
 
+function .ps1() {
+	__shin_set_ps1 "$1"
+}
+
 function __shin_home() {
 	echo "$HOME/.shin"
 }
 
 function __shin_init()
 {
+	echo $PS1 > `__shin_home`/ps1_reset.sh
+
 	if [ -e "`__shin_home`/sets/all.sh" ]
 	then
 		source `__shin_home`/sets/all.sh
@@ -237,7 +243,7 @@ function __shin_update_http() {
 
 		__shin_capture_function_list $package_name
 
-		echo "$package_name installed."
+		echo "$package_name updated from $package_origin."
 	else
 		echo "There was a problem updating from $package_origin."
 	fi
@@ -355,4 +361,19 @@ function __shin_edit_bucket() {
 
 	${FCEDIT:-${VISUAL:-${EDITOR:-vi}}} `__shin_home`/packages/bucket/shinit.sh
 	source `__shin_home`/packages/bucket/shinit.sh
+}
+
+function __shin_set_ps1() {
+	local package_name=$1
+
+	if [ "$package_name" = "reset" ]
+	then
+		PS1=$(cat `shin_home`/ps1_reset.sh)
+		echo "PS1 reset."
+	elif [ -e `__shin_home`/packages/$package_name/ps1.sh ]
+	then
+		source `__shin_home`/packages/$package_name/ps1.sh
+	else
+		echo "Package $package_name doesn't have a prompt script."
+	fi
 }
